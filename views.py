@@ -1,6 +1,7 @@
 from flet import *
-from home import Home
-from login import Login
+from pages.home import Home
+from pages.test import Test
+from pages.login import Login
 
 def views_handler(page):
   return {
@@ -16,4 +17,10 @@ def views_handler(page):
           Login(page)
         ]
       ),
+      '/test': View(
+        route='/test',
+        controls=[
+          Test(page)
+        ]
+      )
   }

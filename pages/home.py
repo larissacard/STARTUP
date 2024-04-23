@@ -1,4 +1,5 @@
 from flet import *
+
 class Home(UserControl):
     def __init__(self,page):
         super().__init__()
@@ -56,8 +57,6 @@ class Home(UserControl):
                     logoBar,
                     description,
                     bttn_start
-                ]
-            )
-            )
-            ]
+                ])
+            )]
         )

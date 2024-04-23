@@ -2,9 +2,17 @@ from flet import *
 from views import views_handler
 
 def main(page: Page):
+  page.title = "CARIRI 360"
+  page.horizontal_alignment = MainAxisAlignment.CENTER
+  page.vertical_alignment = MainAxisAlignment.CENTER
+  page.window_min_width = 500
+  page.window_min_height = 900
+  page.fonts = {
+    "Poppins": "https://github.com/google/fonts/blob/main/ofl/poppins/Poppins-Regular.ttf",
+    "Poppins Bold": "https://github.com/google/fonts/blob/main/ofl/poppins/Poppins-BoldItalic.ttf"
+  }
 
   def route_change(route):
-    print(page.route)
     page.views.clear()
     page.views.append(
       views_handler(page)[page.route]
