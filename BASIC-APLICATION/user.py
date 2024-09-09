@@ -6,10 +6,10 @@ def cadastroUser():
 
         user_dados = {}
         
-        user_dados["nome"] = input("Nome: ")
-        user_dados["email"] = input("E-mail: ")
-        user_dados["senha"] = input("Senha: ")
-        bd_user.adicionarUsuario(user_dados["nome"], user_dados["email"], user_dados["senha"])
+        user_nome = input("Nome: ")
+        user_email = input("E-mail: ")
+        user_senha = input("Senha: ")
+        bd_user.adicionarUsuario(user_nome, user_email, user_senha)
 
 
 def login():
@@ -17,10 +17,10 @@ def login():
 
     login = {}
 
-    login["email"] = input("E-mail: ")
-    login["senha"] = input("Senha: ")
+    login_email = input("E-mail: ")
+    login_senha = input("Senha: ")
 
-    autenticado = bd_user.checar_usuario(login["email"], login["senha"])
+    autenticado = bd_user.checar_usuario(login_email, login_senha)
 
     if(autenticado):
         menu_user()
