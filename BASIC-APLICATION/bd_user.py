@@ -1,5 +1,4 @@
 import sqlite3
-import sqlite3
 import hashlib
 
 conexao = sqlite3.connect('crajubar.db')
