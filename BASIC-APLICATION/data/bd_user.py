@@ -15,7 +15,7 @@ conexao.commit()
 conexao.close()
 
 
-def adicionarUsuario(nome, email, password):
+def adicionar_usuario(nome, email, password):
    hashlib.sha256(password.encode()).hexdigest()
 
    try:
@@ -61,4 +61,3 @@ def listar_usuarios():
        print(user)
 
    conexao.close()
-
