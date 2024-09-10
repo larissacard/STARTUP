@@ -1,5 +1,7 @@
 import os
-import bd
+from data.relatorios import criar_relatorios
+from datetime import datetime, timedelta
+
 
 def menu_empresa():
     nome_logo = '\033[1;34mCRAJUBAR360 - EMPRESA\033[m'
@@ -46,3 +48,20 @@ def login_empresa():
     senha = input("Senha: ")
     
     # bd.loginEmp(email, senha)    
+
+def criar_relatorio():
+    intervalo = input("1 - MÊS \n2 - QUINZENA \n3 - SEMANA")
+    data_atual = datetime.now()
+
+    if intervalo == 1:
+        inicio = data_atual - timedelta(days=30)
+    elif intervalo == 2:
+        inicio = data_atual - timedelta(days=15)
+    elif intervalo == 3:
+        inicio = data_atual - timedelta(days=7)
+    else:
+        raise ValueError("Intervalo inválido! Escolha novamente.")
+    
+    criar_relatorios(inicio, data_atual)
+    
+    # return inicio, data_atual
