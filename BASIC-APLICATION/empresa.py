@@ -1,9 +1,10 @@
 import os
-from data.relatorios import criar_relatorios
+#from data.relatorios import criar_relatorios
 from datetime import datetime, timedelta
+import bd
 
 
-def menu_empresa():
+def menu_empresa_cadastro():
     nome_logo = '\033[1;34mCRAJUBAR360 - EMPRESA\033[m'
     print("=" * 50)
     print(f"{nome_logo:^60}")
@@ -22,6 +23,31 @@ def menu_empresa():
     else:
         limpar_menu()
         print("Opção inválida! Tente novamente.")
+        menu_empresa_cadastro()
+
+def menu_empresa():
+    nome_logo = '\033[1;34mCRAJUBAR360 - EMPRESA\033[m'
+    print("=" * 50)
+    print(f"{nome_logo:^60}")
+    print("=" * 50)
+    print("1 - Relatório \n2 - Passeios Cadastrados \n3 - Cadastrar Passeios \n4 - Sair")
+    opcao = int(input("\033[1;34mDigite a opção desejada:\033[m"))
+
+    if opcao == 1:
+        limpar_menu()
+        criar_relatorio()
+    elif opcao == 2:
+        limpar_menu()
+        passeios_cadastrados()
+    elif opcao == 3:
+        limpar_menu()
+        cadastrar_passeios()
+    elif opcao == 4:
+        limpar_menu()
+        print("PROGRAMA ENCERRADO!")
+    else:
+        limpar_menu()
+        print("Opção inválida! Tente novamente.")
         menu_empresa()
 
 def limpar_menu():
@@ -36,8 +62,10 @@ def cadastro_empresa():
     email = input("E-mail: ")
     password = input("Senha: ")
     tipoEmp = input("Tipo da Empresa: ")
+    limpar_menu()
 
-    # bd.adicionarEmp(nome, email, password, tipoEmp)
+    bd.adicionarEmp(nome, email, password, tipoEmp)
+    menu_empresa_cadastro()
 
 def login_empresa():
     print("=" * 50)
@@ -46,22 +74,33 @@ def login_empresa():
 
     email = input("E-mail: ")
     senha = input("Senha: ")
-    
-    # bd.loginEmp(email, senha)    
+
+    if(bd.checar_Emp(email, senha)):
+        menu_empresa()
+
 
 def criar_relatorio():
-    intervalo = input("1 - MÊS \n2 - QUINZENA \n3 - SEMANA")
-    data_atual = datetime.now()
-
-    if intervalo == 1:
-        inicio = data_atual - timedelta(days=30)
-    elif intervalo == 2:
-        inicio = data_atual - timedelta(days=15)
-    elif intervalo == 3:
-        inicio = data_atual - timedelta(days=7)
-    else:
-        raise ValueError("Intervalo inválido! Escolha novamente.")
+    print('p')
+#   intervalo = input("1 - MÊS \n2 - QUINZENA \n3 - SEMANA")
+ #
+  #  if intervalo == 1:
+   #     inicio = data_atual - timedelta(days=30)
+    #elif intervalo == 2:
+     #   inicio = data_atual - timedelta(days=15)
+  #  elif intervalo == 3:
+   #     inicio = data_atual - timedelta(days=7)
+    #else:
+     #   raise ValueError("Intervalo inválido! Escolha novamente.")
     
-    criar_relatorios(inicio, data_atual)
+    #criar_relatorios(inicio, data_atual)
     
     # return inicio, data_atual
+
+def passeios_cadastrados():
+    print("sds")
+
+def cadastrar_passeios():
+    print("df")
+
+
+menu_empresa_cadastro()
