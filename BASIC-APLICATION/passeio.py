@@ -1,10 +1,8 @@
-import os
 from data.db_passeios import adicionar_passeio, listar_passeios
-# from rich.console import Console
-# from rich.table import Table
-
 
 def cadastra_passeio():
+    print("[Informe os dados para cadastro]")
+
     nome = input("Nome: ")
     tipo = input("Tipo: ")
     vagas = int(input("Vagas: "))
@@ -14,9 +12,8 @@ def cadastra_passeio():
     avaliacao = 0
     descricao = input("Escreva uma descrição: ")
     categoria = input("Categoria: ")
-    adicionar_passeio(nome, tipo, vagas, empresa, valor, avaliacao, descricao, categoria)
+    adicionar_passeio(nome, tipo, vagas, vagas_ocupadas,
+ empresa, valor, avaliacao, descricao, categoria)
 
 def mostrar_passeios():
     listar_passeios()
-
-mostrar_passeios()

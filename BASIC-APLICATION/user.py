@@ -3,8 +3,6 @@ from data.bd_user import adicionarUsuario, checar_usuario
 
 def cadastroUser():
         print("[Informe os dados para cadastro]")
-
-        user_dados = {}
         
         user_nome = input("Nome: ")
         user_email = input("E-mail: ")
@@ -14,8 +12,6 @@ def cadastroUser():
 
 def login():
     print("[Informe os dados para login]")
-
-    login = {}
 
     login_email = input("E-mail: ")
     login_senha = input("Senha: ")
@@ -37,6 +33,3 @@ def menu_user():
 
 def limpar_menu():
     return os.system('cls' if os.name == 'nt' else 'clear')
-
-cadastroUser()
-login()
