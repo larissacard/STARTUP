@@ -1,5 +1,6 @@
 import os
 from data.bd_user import checar_usuario, adicionar_usuario
+import passeio
 
 def menu_user():
     nome_logo = '\033[1;34mCRAJUBAR360\033[m'
@@ -51,6 +52,7 @@ def cadastro_user():
         user_senha = input("Senha: ")
 
         adicionar_usuario(user_nome, user_email, user_senha)
+        login_user()
 
 
 def menu_user_passeios():
@@ -63,7 +65,7 @@ def menu_user_passeios():
     opcao = int(input("\033[1;34mDigite a opção desejada:\033[m "))
 
     if opcao == 1:
-        print('a')
+        passeio.listar_passeios()
     elif opcao == 2:
         print('b')
     elif opcao == 3:
