@@ -1,10 +1,6 @@
 import sqlite3
 from datetime import datetime
 
-def fechar_bd(conn):
-    conn.commit()
-    conn.close()
-
 def consultar_passeios(inicio, fim):
     conexao = sqlite3.connect('crajubar.db')
     cursor = conexao.cursor()
@@ -26,7 +22,8 @@ def inserir_relatorio(conn, faturamento, agendamentos, alcance, data):
         VALUES (?, ?, ?, ?, ?)
     ''', (faturamento, agendamentos, agendamentos, alcance, data))
 
-    conn.commit()
+    conexao.commit()
+    conexao.close()
 
 def calcular_metrica(passeios):
     faturamento = sum(valor * vagas_ocupadas for valor, vagas_ocupadas, _ in passeios)
@@ -45,4 +42,5 @@ def criar_relatorios(inicio, fim):
 
     inserir_relatorio(conexao, faturamento, agendamentos, alcance, datetime.now().date())
 
-    fechar_bd(conexao)
+    conexao.commit()
+    conexao.close()

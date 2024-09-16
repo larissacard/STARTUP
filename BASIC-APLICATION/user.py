@@ -1,5 +1,5 @@
 import os
-from data.bd_user import checar_usuario, adicionar_usuario
+from database.bd_user import checar_usuario, adicionar_usuario
 import passeio
 
 def menu_user():

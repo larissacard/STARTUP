@@ -1,7 +1,8 @@
 import os
-from data.relatorios import criar_relatorios
+from database.bd_relatorios import criar_relatorios
 from datetime import datetime, timedelta
 import passeio
+from database.bd_empresa import adicionar_empresa, checar_empresa
 
 
 def menu_empresa_cadastro():
@@ -61,10 +62,8 @@ def cadastro_empresa():
     nome = input("Nome: ")
     email = input("E-mail: ")
     password = input("Senha: ")
-    tipoEmp = input("Tipo da Empresa: ")
-    limpar_menu()
-
-    # bd.adicionarEmp(nome, email, password, tipoEmp)
+    
+    adicionar_empresa(nome, email, password)
     login_empresa()
 
 def login_empresa():
@@ -75,8 +74,8 @@ def login_empresa():
     email = input("E-mail: ")
     senha = input("Senha: ")
 
-    # if(bd.checar_Emp(email, senha)):
-    #     menu_empresa()
+    if(checar_empresa(email, senha)):
+        menu_empresa()
 
 
 def criar_relatorio():

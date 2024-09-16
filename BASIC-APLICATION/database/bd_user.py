@@ -1,19 +1,6 @@
 import sqlite3
 import hashlib
 
-conexao = sqlite3.connect('crajubar.db')
-cursor = conexao.cursor()
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
-               id INTEGER PRIMARY KEY AUTOINCREMENT,
-               nome TEXT NOT NULL,
-               email TEXT NOT NULL UNIQUE,
-               password TEXT NOT NULL
-               )''')
-
-conexao.commit()
-conexao.close()
-
 
 def adicionar_usuario(nome, email, password):
    hashlib.sha256(password.encode()).hexdigest()

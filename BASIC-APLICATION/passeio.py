@@ -1,4 +1,4 @@
-from data.db_passeios import adicionar_passeio, listar_passeios
+from database.db_passeios import adicionar_passeio, listar_passeios
 from rich.console import Console
 from rich.table import Table
 
