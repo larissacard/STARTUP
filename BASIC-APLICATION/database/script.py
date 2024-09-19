@@ -22,7 +22,7 @@ cursor.executemany('''
 
 # Inserir dados na tabela empresa
 cursor.executemany('''
-    INSERT INTO empresa (nome, email, password) VALUES (?, ?, ?)
+    INSERT INTO empresas (nome, email, password) VALUES (?, ?, ?)
 ''', [
     ('Aventuras Ltda', 'contato@aventuras.com', 'senha123'),
     ('ExploraTour', 'contato@exploratour.com', 'senha456'),
@@ -36,21 +36,40 @@ cursor.executemany('''
     ('Paisagens Extremas', 'contato@paisagensextremas.com', 'senha107')
 ])
 
-# Inserir dados na tabela passeios
+#Inserir dados
 cursor.executemany('''
     INSERT INTO passeios (empresa_id, nome, tipo, vagas, vagas_ocupadas, empresa, alcance, valor, avaliacao, descricao, categoria)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ''', [
-    (1, 'Cachoeira do Sol', 'Ecoturismo', 20, 5, 'Aventuras Ltda', 100, 150.0, 4.5, 'Passeio para a cachoeira mais bonita da região', 'Natureza'),
-    (2, 'Passeio de Barco', 'Aventura', 15, 10, 'ExploraTour', 150, 200.0, 4.7, 'Passeio de barco pelo rio local', 'Aventura'),
-    (3, 'Trilha das Pedras', 'Ecoturismo', 25, 8, 'Trilhas e Passeios', 120, 100.0, 4.6, 'Trilha com vistas incríveis e pontos de observação', 'Natureza'),
-    (4, 'Mergulho Profundo', 'Aventura', 10, 7, 'EcoTurismo BR', 90, 300.0, 4.8, 'Experiência de mergulho em águas profundas', 'Aventura'),
-    (5, 'Rapel na Montanha', 'Aventura', 8, 4, 'Natureza Viva', 80, 250.0, 4.2, 'Rapel em montanha com vistas impressionantes', 'Aventura'),
-    (6, 'Camping na Floresta', 'Ecoturismo', 12, 6, 'Aventura X', 110, 180.0, 4.4, 'Camping em meio à floresta com atividades ao ar livre', 'Natureza'),
-    (7, 'Passeio a Cavalo', 'Aventura', 15, 9, 'Turismo Seguro', 130, 100.0, 4.3, 'Passeio a cavalo em trilhas naturais', 'Natureza'),
-    (8, 'Espeleologia', 'Aventura', 20, 12, 'Montanha e Mar', 70, 220.0, 4.9, 'Exploração de cavernas e grutas', 'Aventura'),
-    (9, 'Trilha da Serra', 'Ecoturismo', 18, 11, 'Vida ao Ar Livre', 95, 120.0, 4.5, 'Trilha pela serra com belas paisagens', 'Natureza'),
-    (10, 'Rafting no Rio Bravo', 'Aventura', 12, 10, 'Paisagens Extremas', 140, 210.0, 4.7, 'Rafting em um dos rios mais desafiadores', 'Aventura')
+    (1, 'Rafting no Rio Azul', 'Aventura', 10, 2, 'Aventuras Ltda', 110, 220.0, 4.6, 'Rafting em um rio com corredeiras emocionantes', 'Aventura e Natureza'),
+    (1, 'Caminhada na Floresta', 'Ecoturismo', 15, 5, 'Aventuras Ltda', 95, 90.0, 4.5, 'Caminhada por trilhas em meio à floresta', 'Aventura e Natureza'),
+    
+    (2, 'Tour Gastronômico', 'Gastronomia', 20, 8, 'ExploraTour', 120, 130.0, 4.7, 'Descubra os sabores locais em um tour gastronômico', 'Gastronomia e Bebidas'),
+    (2, 'Passeio Noturno de Barco', 'Aventura', 15, 5, 'ExploraTour', 150, 250.0, 4.8, 'Passeio de barco à noite com vista da cidade', 'Aventura e Natureza'),
+    
+    (3, 'Trilha do Sol Poente', 'Ecoturismo', 20, 3, 'Trilhas e Passeios', 100, 110.0, 4.4, 'Trilha que termina com vista do pôr do sol', 'Aventura e Natureza'),
+    (3, 'Oficina de Artesanato', 'Cultural', 10, 2, 'Trilhas e Passeios', 60, 50.0, 4.5, 'Aprenda técnicas de artesanato local', 'História e Cultura'),
+    
+    (4, 'Mergulho em Recifes', 'Aventura', 8, 1, 'EcoTurismo BR', 80, 350.0, 4.9, 'Mergulho em recifes com vida marinha exuberante', 'Aventura e Natureza'),
+    (4, 'Caminhada Ecológica', 'Ecoturismo', 15, 6, 'EcoTurismo BR', 100, 75.0, 4.5, 'Caminhada com foco em educação ambiental', 'Aventura e Natureza'),
+
+    (5, 'Expedição de Aventura', 'Aventura', 12, 4, 'Natureza Viva', 110, 200.0, 4.6, 'Expedição de aventura em áreas remotas', 'Aventura e Natureza'),
+    (5, 'Observação de Aves', 'Ecoturismo', 10, 3, 'Natureza Viva', 95, 85.0, 4.7, 'Passeio para observar aves em seu habitat', 'Aventura e Natureza'),
+
+    (6, 'Aula de Yoga na Natureza', 'Lazer', 15, 5, 'Aventura X', 80, 60.0, 4.5, 'Aula de yoga ao ar livre, em meio à natureza', 'Lazer e Entretenimento'),
+    (6, 'Acampamento de Verão', 'Ecoturismo', 25, 10, 'Aventura X', 150, 150.0, 4.8, 'Acampamento com atividades ao ar livre', 'Aventura e Natureza'),
+
+    (7, 'Passeio de Bike na Praia', 'Aventura', 20, 5, 'Turismo Seguro', 100, 70.0, 4.5, 'Passeio de bicicleta ao longo da orla', 'Aventura e Natureza'),
+    (7, 'Caminhada nas Dunas', 'Ecoturismo', 12, 4, 'Turismo Seguro', 130, 90.0, 4.6, 'Caminhada pelas dunas com vistas espetaculares', 'Aventura e Natureza'),
+
+    (8, 'Tour de Caverna', 'Aventura', 10, 3, 'Montanha e Mar', 70, 120.0, 4.8, 'Exploração de cavernas com guias experientes', 'Aventura e Natureza'),
+    (8, 'Passeio Cultural em Grutas', 'Cultural', 15, 2, 'Montanha e Mar', 50, 45.0, 4.4, 'Visita a grutas com valor histórico', 'História e Cultura'),
+
+    (9, 'Trilha do Mirante', 'Ecoturismo', 18, 5, 'Vida ao Ar Livre', 100, 80.0, 4.6, 'Trilha que leva a um mirante incrível', 'Aventura e Natureza'),
+    (9, 'Oficina de Fotografia', 'Cultural', 10, 4, 'Vida ao Ar Livre', 70, 100.0, 4.5, 'Oficina de fotografia na natureza', 'História e Cultura'),
+
+    (10, 'Aventura no Parque', 'Aventura', 15, 5, 'Paisagens Extremas', 90, 110.0, 4.7, 'Diversas atividades de aventura em um parque', 'Aventura e Natureza'),
+    (10, 'Dia de Pesca', 'Lazer', 8, 3, 'Paisagens Extremas', 50, 60.0, 4.4, 'Dia de pesca em um lago tranquilo', 'Lazer e Entretenimento')
 ])
 
 # Inserir dados na tabela passeios_agendados

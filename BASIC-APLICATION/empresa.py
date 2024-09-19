@@ -3,7 +3,7 @@ from database.bd_relatorios import criar_relatorios
 from datetime import datetime, timedelta
 import passeio
 from database.bd_empresa import adicionar_empresa, checar_empresa
-
+from dashboard import gerar_dashboard
 
 def menu_empresa_cadastro():
     nome_logo = '\033[1;34mCRAJUBAR360 - EMPRESA\033[m'
@@ -71,33 +71,25 @@ def login_empresa():
     print(f"{'LOGIN EMPRESA':^50}")
     print("=" * 50)
 
+    global id
+
     email = input("E-mail: ")
     senha = input("Senha: ")
 
-    if(checar_empresa(email, senha)):
+    resultado_id = checar_empresa(email, senha)
+
+    if(resultado_id):
+        id = resultado_id
+        print("Login realizado com sucesso!")
         menu_empresa()
 
 
 def criar_relatorio():
-    print("Escolha um intervalo de tempo para o relatório:")
-    intervalo = input("1 - MÊS \n2 - QUINZENA \n3 - SEMANA")
-    data_atual = datetime.now()
-
-    if intervalo == 1:
-       inicio = data_atual - timedelta(days=30)
-    elif intervalo == 2:
-       inicio = data_atual - timedelta(days=15)
-    elif intervalo == 3:
-       inicio = data_atual - timedelta(days=7)
-    else:
-       raise ValueError("Intervalo inválido! Escolha novamente.")
-    
-    criar_relatorios(inicio, data_atual)
-    
-    return inicio, data_atual
+    gerar_dashboard()
 
 def passeios_cadastrados():
-    passeio.mostrar_passeios()
+    passeio.mostrar_passeios(id, 'empresa')
 
 def cadastrar_passeios():
     passeio.cadastra_passeio()
+

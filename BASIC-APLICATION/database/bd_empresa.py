@@ -11,10 +11,10 @@ def adicionar_empresa(nome, email, password):
     try:
         conexao = sqlite3.connect('crajubar.db')
         cursor = conexao.cursor()
-        cursor.execute('''INSERT INTO empresa(nome, email, password) VAL=UES (?, ?, ?)''', (nome, email, password))
+        cursor.execute('''INSERT INTO empresas(nome, email, password) VALUES (?, ?, ?)''', (nome, email, password))
         conexao.commit()
     
-        print("Empresa cadastrda com sucesso!")
+        print("Empresa cadastrada com sucesso!")
     except sqlite3.IntegrityError:
         print("Erro: O email já está cadastrado.")
     finally:
@@ -27,29 +27,23 @@ def checar_empresa(email, password):
     conexao = sqlite3.connect('crajubar.db')
     cursor = conexao.cursor()
 
-    cursor.execute('''Select * FROM empresa WHERE email = ? AND password = ?''', (email, password))
-    user = cursor.fetchone()
-
+    cursor.execute('''Select * FROM empresas WHERE email = ? AND password = ?''', (email, password))
+    empresa = cursor.fetchone()
     conexao.close()
 
-    if user:
-        return True
+    if empresa:
+        return empresa[0]
     else:
         return False
 
 
 
-
-def listar_empresa():
+def listar_empresas():
     conexao = sqlite3.connect('crajubar.db')
     cursor = conexao.cursor()
 
-    cursor.execute('''SELECT * FROM usuarios''')
-    usuarios = cursor.fetchall()
-
-    for user in usuarios:
-        print(user)
-
+    cursor.execute('''SELECT * FROM empresas''',)
+    empresas = cursor.fetchall()
     conexao.close()
-
-
+    
+    return empresas

@@ -2,6 +2,8 @@ import os
 from database.bd_user import checar_usuario, adicionar_usuario
 import passeio
 
+id = 0
+
 def menu_user():
     nome_logo = '\033[1;34mCRAJUBAR360\033[m'
     print("=" * 50)
@@ -19,6 +21,7 @@ def menu_user():
         cadastro_user()
     elif opcao == 3:
         print("Tchau tchau!")
+        limpar_menu()
     else:
         limpar_menu()
         print("Opção inválida! Tente novamente.")
@@ -31,10 +34,15 @@ def login_user():
     print(f"{'LOGIN':^50}")
     print("=" * 50)
 
+    global id
+
     email = input("Email: ")
     senha = input("Senha: ")
+    user_id = checar_usuario(email, senha)
 
-    if checar_usuario(email, senha):
+
+    if (user_id):
+        id = user_id    
         print("Login realizado com sucesso!")
         limpar_menu()
         menu_user_passeios()
@@ -56,20 +64,35 @@ def cadastro_user():
 
 
 def menu_user_passeios():
-    nome_logo = '\033[1;34mCRAJUBAR360\033[m'
-    print("=" * 50)
-    print(f"{nome_logo:^60}")
-    print("=" * 50)
-    print("1 - LISTAR PASSEIOS \n2 - LISTAR PASSEIOS POR CATEGORIA \n3 - AGENDAR PASSEIOS \n4 - AVALIAR PASSEIO")
+    while True:
+        nome_logo = '\033[1;34mCRAJUBAR360\033[m'
+        print("=" * 50)
+        print(f"{nome_logo:^60}")
+        print("=" * 50)
+        print("1 - LISTAR PASSEIOS \n2 - LISTAR PASSEIOS POR CATEGORIA \n3 - AGENDAR PASSEIOS \n4 - AVALIAR PASSEIO \n5 - VOLTAR")
 
-    opcao = int(input("\033[1;34mDigite a opção desejada:\033[m "))
+        opcao = int(input("\033[1;34mDigite a opção desejada:\033[m "))
 
-    if opcao == 1:
-        passeio.listar_passeios()
-    elif opcao == 2:
-        print('b')
-    elif opcao == 3:
-        print('c')
-    else:
-        limpar_menu()
-        print("Opção inválida! Tente novamente.")
+        if opcao == 1:
+            passeio.mostrar_passeios(id, 'viajante')
+            input("Pressione Enter para voltar ao menu.")
+        elif opcao == 2:
+            passeio.listar_categoria()  # Presumindo que existe essa função
+            input("Pressione Enter para voltar ao menu.")
+        elif opcao == 3:
+            passeio.agendar_passeio(id)
+            input("Pressione Enter para voltar ao menu.")
+        elif opcao == 4:
+            # passeio.avaliar_passeio(id)  # Presumindo que existe uma função para avaliar passeios
+            input("Pressione Enter para voltar ao menu.")
+        elif opcao == 5:
+            limpar_menu()
+            # menu_user() 
+            # Volta para o menu principal
+            break
+        else:
+            print("Opção inválida! Tente novamente.")
+            input("Pressione Enter para tentar novamente...")
+            limpar_menu()
+
+# Chame a função menu_user() para iniciar o programa.

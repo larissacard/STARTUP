@@ -12,7 +12,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS usuarios (
                )''')
 
 #EMPRESAS
-cursor.execute('''CREATE TABLE IF NOT EXISTS empresa (
+cursor.execute('''CREATE TABLE IF NOT EXISTS empresas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
             email TEXT NOT NULL,
@@ -35,21 +35,6 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS passeios (
                 categoria TEXT NOT NULL,
                 FOREIGN KEY (empresa_id) REFERENCES empresas (id)     
                 )''')
-
-# cursor.execute('''
-#     CREATE TABLE IF NOT EXISTS passeios (
-#         id INTEGER PRIMARY KEY AUTOINCREMENT,
-#         empresa_id INTEGER NOT NULL,
-#         nome TEXT NOT NULL,
-#         descricao TEXT,
-#         preco REAL,
-#         alcance INTEGER NOT NULL,
-#         media_avaliacao REAL NOT NULL,
-#         data TEXT,
-#         FOREIGN KEY (empresa_id) REFERENCES empresas (id)
-#     )
-# ''')
-
 
 #PASSEIOS AGENDADOS
 cursor.execute('''
