@@ -77,22 +77,18 @@ def menu_user_passeios():
             passeio.mostrar_passeios(id, 'viajante')
             input("Pressione Enter para voltar ao menu.")
         elif opcao == 2:
-            passeio.listar_categoria()  # Presumindo que existe essa função
+            passeio.listar_categoria()
             input("Pressione Enter para voltar ao menu.")
         elif opcao == 3:
-            passeio.agendar_passeio(id)
+            passeio.agendar_passeios(id)
             input("Pressione Enter para voltar ao menu.")
         elif opcao == 4:
-            # passeio.avaliar_passeio(id)  # Presumindo que existe uma função para avaliar passeios
+            passeio.sistema_avaliacao(id)
             input("Pressione Enter para voltar ao menu.")
         elif opcao == 5:
             limpar_menu()
-            # menu_user() 
-            # Volta para o menu principal
             break
         else:
             print("Opção inválida! Tente novamente.")
             input("Pressione Enter para tentar novamente...")
             limpar_menu()
-
-# Chame a função menu_user() para iniciar o programa.

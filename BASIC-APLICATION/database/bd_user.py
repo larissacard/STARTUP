@@ -32,7 +32,7 @@ def checar_usuario(email, password):
     if user:
         return user[0]
     else:
-        return False
+        return None
 
 
 def listar_usuarios():

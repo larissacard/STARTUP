@@ -33,6 +33,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS passeios (
                 avaliacao REAL NOT NULL,
                 descricao TEXT NOT NULL,
                 categoria TEXT NOT NULL,
+                avaliadores INTEGER NOT NULL,
                 FOREIGN KEY (empresa_id) REFERENCES empresas (id)     
                 )''')
 
@@ -48,18 +49,6 @@ cursor.execute('''
     )
 ''')
 
-# AVALIAÇÕES PASSEIOS
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS avaliacoes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        cliente_id INTEGER NOT NULL,
-        passeio_id INTEGER NOT NULL,
-        nota INTEGER CHECK(nota >= 1 AND nota <= 5),
-        FOREIGN KEY (cliente_id) REFERENCES clientes (id),
-        FOREIGN KEY (passeio_id) REFERENCES passeios (id)
-    )
-''')
-
 # RELATÓRIOS
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS relatorios (
@@ -70,13 +59,32 @@ cursor.execute('''
         clientes_mes INTEGER,
         agendamentos_mes INTEGER,
         crescimento TEXT,
+        data_relatorio TEXT,
         FOREIGN KEY (passeio_id) REFERENCES passeios (id)
     )
 ''')
 
-cursor.execute('''
-    ALTER TABLE relatorios ADD COLUMN data_relatorio TEXT
-''')
+# Tabela de participações
+cursor.execute('''CREATE TABLE IF NOT EXISTS participacoes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cliente_id INTEGER NOT NULL,
+        passeio_id INTEGER NOT NULL,
+        avaliado INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY (cliente_id) REFERENCES usuarios(id),
+        FOREIGN KEY (passeio_id) REFERENCES passeios(id)
+    );''')
+
+
+
+cursor.execute('''CREATE TABLE IF NOT EXISTS avaliacoes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        passeio_id INTEGER NOT NULL,
+        cliente_id INTEGER NOT NULL,
+        avaliacao_texto TEXT,
+        avaliacao REAL NOT NULL,
+        FOREIGN KEY (passeio_id) REFERENCES passeios(id),
+        FOREIGN KEY (cliente_id) REFERENCES usuarios(id)
+    );''')
 
 conexao.commit()
 conexao.close()

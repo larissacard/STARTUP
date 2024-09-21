@@ -1,3 +1,4 @@
+# gerar_dashboard()
 import tkinter as tk
 from tkinter import StringVar
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -18,6 +19,7 @@ def obter_dados_relatorios():
     dados = cursor.fetchall()
     conn.close()
     return dados
+
 
 # Função para processar os dados de acordo com o intervalo
 def processar_dados_intervalos(dados, intervalo):
