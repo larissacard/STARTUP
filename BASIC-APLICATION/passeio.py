@@ -6,14 +6,6 @@ from datetime import datetime
 import qrcode
 import sqlite3
 
-def formatar_avaliação(avaliacao, avaliadores):
-    if(avaliadores != 0):
-        media_avaliacao = avaliacao / avaliadores
-        avaliacao_star = formatar_avaliacao_stars(media_avaliacao)
-    else:
-        avaliacao_star = "Sem avaliação"
-    return avaliacao_star
-
 def montar_tabela(passeios):
     console = Console()
     table = Table(show_header=True, header_style="bold blue", title="PASSEIOS")
@@ -29,7 +21,7 @@ def montar_tabela(passeios):
     table.add_column("CATEGORIA", justify="center")
     
     for passeio in passeios:
-        avaliacao = formatar_avaliação(passeio[9], passeio[12])
+        avaliacao = formatar_avaliacao_stars(passeio[9])
 
         table.add_row(
                     str(passeio[0]), #ID
@@ -148,7 +140,7 @@ def exibir_detalhes_passeio(passeio, passeio_id):
 
 def buscar_avaliacoes(passeio_id):
     avaliacoes = achar_avaliacoes(passeio_id)
-
+    
     if avaliacoes:
         print("==" * 60)
 
@@ -177,15 +169,15 @@ def buscar_avaliacoes(passeio_id):
 def formatar_avaliacao_stars(media_avaliacao):
     if(media_avaliacao >= 0 and media_avaliacao<= 1):
         avaliacao_star = "✰"
-    elif(media_avaliacao == 1):
+    elif(media_avaliacao >= 1 and media_avaliacao< 2):
         avaliacao_star = ":star:"
-    elif(media_avaliacao == 2):
+    elif(media_avaliacao >= 2 and media_avaliacao < 3):
         avaliacao_star = ":star: :star:"
-    elif(media_avaliacao == 3):
+    elif(media_avaliacao >= 3 and media_avaliacao < 4):
         avaliacao_star = ":star: :star: :star:"
-    elif(media_avaliacao == 4):
+    elif(media_avaliacao >= 4 and media_avaliacao < 5):
         avaliacao_star = ":star: :star: :star: :star:"
-    elif(media_avaliacao == 5):
+    elif(media_avaliacao >= 5):
         avaliacao_star = ":star: :star: :star: :star: :star:"
     else:
         avaliacao_star = "Sem avaliação"
