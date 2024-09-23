@@ -36,7 +36,7 @@ def menu_empresa():
         opcao = int(input("\033[1;34mDigite a opção desejada:\033[m"))
 
         if opcao == 1:
-            renderizar_graficos()
+            renderizar_graficos(id)
         elif opcao == 2:
             limpar_menu()
             passeios_cadastrados()
