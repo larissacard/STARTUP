@@ -150,7 +150,7 @@ def buscar_avaliacoes(passeio_id):
     avaliacoes = achar_avaliacoes(passeio_id)
 
     if avaliacoes:
-        print("==" * 100)
+        print("==" * 60)
 
         console = Console()
 

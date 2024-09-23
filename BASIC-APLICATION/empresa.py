@@ -1,9 +1,8 @@
 import os
-from database.bd_relatorios import criar_relatorios
 from datetime import datetime, timedelta
 import passeio
 from database.bd_empresa import adicionar_empresa, checar_empresa
-from dashboard import gerar_dashboard
+from dashboard import renderizar_graficos
 from database.db_passeios import adicionar_passeio
 
 def menu_empresa_cadastro():
@@ -37,8 +36,7 @@ def menu_empresa():
         opcao = int(input("\033[1;34mDigite a opção desejada:\033[m"))
 
         if opcao == 1:
-            criar_relatorio()
-            menu_empresa()
+            renderizar_graficos()
         elif opcao == 2:
             limpar_menu()
             passeios_cadastrados()
@@ -92,9 +90,6 @@ def login_empresa():
         print("Email ou senha incorretos. Tente novamente!")
         login_empresa()
 
-
-def criar_relatorio():
-    gerar_dashboard()
 
 def passeios_cadastrados():
     passeio.mostrar_passeios(id, 'empresa')

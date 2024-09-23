@@ -1,13 +1,11 @@
-# gerar_dashboard()
-import tkinter as tk
-from tkinter import StringVar
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import matplotlib.pyplot as plt
 import sqlite3
+import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import pandas as pd
+from matplotlib.gridspec import GridSpec
+from multiprocessing import Process
+import numpy as np
 
-# Função para obter os dados dos relatórios
 def obter_dados_relatorios():
     conn = sqlite3.connect('crajubar.db')
     cursor = conn.cursor()
@@ -20,13 +18,11 @@ def obter_dados_relatorios():
     conn.close()
     return dados
 
-
-# Função para processar os dados de acordo com o intervalo
 def processar_dados_intervalos(dados, intervalo):
     df = pd.DataFrame(dados, columns=['nome', 'faturamento_mes', 'listagens_mes', 'clientes_mes', 'agendamentos_mes', 'crescimento'])
     
     hoje = datetime.now()
-    df['data'] = hoje  # Simulando que todos os dados são de hoje (ajuste para incluir datas reais)
+    df['data'] = hoje 
     
     data_limite = hoje - timedelta(days=intervalo)
     dados_intervalo = df[df['data'] >= data_limite]
@@ -39,110 +35,68 @@ def processar_dados_intervalos(dados, intervalo):
     
     return resultados
 
-# Função para abreviar os nomes
-def abreviar_nome(nome):
-    partes = nome.split()
-    if len(partes) > 1:
-        return f"{partes[0][0]}. {' '.join(partes[1:])}"
-    return nome
+def gerar_faturamento_diario(passeio, dias):
+    """Função para simular o faturamento diário nos últimos 'dias' dias."""
+    np.random.seed(len(passeio)) 
 
-# Função para criar o gráfico de faturamento por passeio
-def criar_grafico_faturamento():
+    faturamento_base = np.random.randint(500, 2000)
+    variação_diaria = np.random.normal(0, 100, dias)
+    return np.round(np.cumsum(variação_diaria) + faturamento_base, 2)
+
+def obter_dados_7dias():
     dados = obter_dados_relatorios()
-    nomes_passeios = [abreviar_nome(dado[0]) for dado in dados]
+    hoje = datetime.now()
+
+    
+    dias = 7
+    datas = [hoje - timedelta(days=i) for i in range(dias)][::-1]
+    df = pd.DataFrame({'data': datas})
+
+    
+    for passeio in [dado[0] for dado in dados]:
+        df[passeio] = gerar_faturamento_diario(passeio, dias)
+
+    return df
+
+def renderizar_graficos():
+    dados = obter_dados_relatorios()
+    nomes_passeios = [dado[0] for dado in dados]
     faturamentos = [dado[1] for dado in dados]
-
-    fig, ax = plt.subplots()
-    ax.bar(nomes_passeios, faturamentos)
-    ax.set_title('Faturamento por Passeio')
-    ax.set_xlabel('Passeio')
-    ax.set_ylabel('Faturamento (R$)')
-    return fig
-
-# Função para criar o gráfico de agendamentos por passeio
-def criar_grafico_agendamentos():
-    dados = obter_dados_relatorios()
-    nomes_passeios = [abreviar_nome(dado[0]) for dado in dados]
     agendamentos = [dado[4] for dado in dados]
 
-    fig, ax = plt.subplots()
-    ax.barh(nomes_passeios, agendamentos)
-    ax.set_title('Agendamentos por Passeio')
-    ax.set_xlabel('Nº Agendamentos')
-    ax.set_ylabel('Passeio')
-    return fig
+    print(agendamentos)
+    
+    fig = plt.figure(figsize=(10, 8))
+    gs = GridSpec(2, 2, height_ratios=[1, 1])
 
-# Função para criar o gráfico de crescimento de faturamento
-def criar_grafico_crescimento(intervalo):
-    dados = obter_dados_relatorios()
-    resultados = processar_dados_intervalos(dados, intervalo)
-    dados_intervalo = resultados['dados_intervalo']
     
-    nomes_passeios = [abreviar_nome(nome) for nome in dados_intervalo['nome']]
-    faturamentos = dados_intervalo['faturamento_mes']
+    ax1 = fig.add_subplot(gs[0, 0])
+    ax1.bar(nomes_passeios, faturamentos)
+    ax1.set_title('Faturamento por Passeio')
+    ax1.set_xlabel('Passeio')
+    ax1.set_ylabel('Faturamento (R$)')
+
     
-    fig, ax = plt.subplots()
-    ax.plot(nomes_passeios, faturamentos, marker='o', linestyle='-', color='#012E40')
-    ax.set_title(f'Crescimento de Faturamento nos últimos {intervalo} dias')
-    ax.set_xlabel('Passeio')
-    ax.set_ylabel('Faturamento (R$)')
-    plt.xticks(rotation=45, ha='right')
+    ax2 = fig.add_subplot(gs[0, 1])
+    ax2.barh(nomes_passeios, agendamentos)
+    ax2.set_title('Agendamentos por Passeio')
+    ax2.set_xlabel('Nº Agendamentos')
+    ax2.set_ylabel('Passeio')
+
+    df = obter_dados_7dias() 
+
+    ax3 = fig.add_subplot(gs[1, :])
+    for coluna in df.columns[1:]:
+        ax3.plot(df['data'], df[coluna], marker='o', label=coluna)
+
+    ax3.set_title('Crescimento/Decrescimento de Faturamento nos Últimos 7 Dias')
+    ax3.set_xlabel('Data')
+    ax3.set_ylabel('Faturamento (R$)')
+    ax3.legend(loc='upper left')
+    ax3.grid(True)
+    fig.autofmt_xdate()
+
+    plt.subplots_adjust(wspace=0.336)
+
     plt.tight_layout()
-    return fig
-
-# Função para atualizar o gráfico de crescimento com o intervalo selecionado
-def atualizar_grafico_crescimento(canvas, frame, intervalo):
-    # Limpa o gráfico atual
-    for widget in frame.winfo_children():
-        widget.destroy()
-    
-    # Cria o gráfico atualizado
-    fig = criar_grafico_crescimento(intervalo)
-    canvas = FigureCanvasTkAgg(fig, frame)
-    canvas.draw()
-    canvas.get_tk_widget().pack(side="left", fill="both", expand=True)
-
-# Função para gerar a janela root e exibir os gráficos ocupando todo o espaço
-def gerar_dashboard():
-    root = tk.Tk()
-    root.title("Dashboard")
-    w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-    root.geometry("%dx%d+0+0" % (w, h))
-
-    charts_frame = tk.Frame(root)
-    charts_frame.pack(fill="both", expand=True)
-
-    upper_frame = tk.Frame(charts_frame)
-    upper_frame.pack(fill="both", expand=True)
-
-    canvas1 = FigureCanvasTkAgg(criar_grafico_faturamento(), upper_frame)
-    canvas1.draw()
-    canvas1.get_tk_widget().pack(side="left", fill="both", expand=True)
-
-    canvas2 = FigureCanvasTkAgg(criar_grafico_agendamentos(), upper_frame)
-    canvas2.draw()
-    canvas2.get_tk_widget().pack(side="left", fill="both", expand=True)
-
-    lower_frame = tk.Frame(charts_frame)
-    lower_frame.pack(fill="both", expand=True)
-
-    # Dropdown para seleção do intervalo
-    intervalo_var = StringVar()
-    intervalo_var.set("7")  # Intervalo padrão de 7 dias
-
-    intervalos = {"7 dias": 7, "15 dias": 15, "30 dias": 30}
-    dropdown = tk.OptionMenu(root, intervalo_var, *intervalos.keys(), command=lambda val: atualizar_grafico_crescimento(canvas3, lower_frame, intervalos[val]))
-    dropdown.pack(side="top", pady=10)
-
-    # Criação do gráfico de crescimento inicial
-    canvas3 = FigureCanvasTkAgg(criar_grafico_crescimento(7), lower_frame)
-    canvas3.draw()
-    canvas3.get_tk_widget().pack(side="left", fill="both", expand=True)
-
-    # Ajusta as proporções dos gráficos dentro dos frames
-    upper_frame.grid_columnconfigure(0, weight=1)
-    upper_frame.grid_rowconfigure(0, weight=1)
-    lower_frame.grid_columnconfigure(0, weight=1)
-    lower_frame.grid_rowconfigure(0, weight=1)
-
-    root.mainloop()
+    plt.show()
